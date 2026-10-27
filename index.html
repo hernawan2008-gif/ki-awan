@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ki Awan V7.9 FINAL MEWAH</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:sans-serif;background:#0a3324;display:flex;justify-content:center}.phone{width:100%;max-width:440px;background:#041a12;min-height:100vh;padding:14px;color:#fff}.card{background:#fff;color:#064e3b;border-radius:20px;padding:16px;margin-top:12px}.inputName{width:100%;padding:12px;border:2px solid #064e3b;border-radius:10px;font-weight:700;text-align:center;text-transform:uppercase}.viewer{background:#000;border-radius:14px;height:340px;margin-top:8px;overflow:hidden}video{width:100%;height:100%;object-fit:cover}.btnGold{width:100%;background:#fbbf24;color:#064e3b;padding:14px;border-radius:12px;font-weight:900;margin-top:10px;border:none;cursor:pointer}.qrBox{background:#fff;border:2px dashed green;border-radius:14px;padding:12px;text-align:center;margin-top:12px}.detailBox{text-align:left;background:#f0fdf4;border-radius:10px;padding:10px;margin-top:8px;font-size:13px;line-height:1.5}.btnPDF{width:100%;background:#064e3b;color:#fbbf24;padding:14px;border-radius:12px;margin-top:10px;border:2px solid #fbbf24;font-weight:900;cursor:pointer}</style>
+</head><body><div class="phone"><h1 style="text-align:center">Telaah Karakter<br>Tangan Islami<br><span style="color:#fbbf24;font-size:12px">BY KI AWAN - V7.9 FINAL</span></h1><div class="card"><label><b>Nama:</b></label><input id="nama" class="inputName" placeholder="CONTOH: JOKO"><label style="margin-top:8px;display:block"><b>Pindai Tangan:</b></label><div class="viewer"><video id="v" autoplay playsinline muted></video></div><button class="btnGold" onclick="analisa()">ANALISA</button><div id="hasil" style="display:none"></div></div></div>
+<img id="tpl" src="sertifikat-template-final.jpeg" style="display:none;"><img id="qr" src="qr-dana-asli.jpeg" style="display:none;">
+<canvas id="cv" width="1080" height="1920" style="display:none;"></canvas>
+<script>
+let s=null;const v=document.getElementById('v');async function start(){if(s){s.getTracks().forEach(t=>t.stop())}try{const x=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});s=x;v.srcObject=x}catch(e){}}start();let cur={};
+function analisa(){const n=document.getElementById('nama').value.trim()||'Hamba Allah';const list=[{t:'Pemimpin Amanah',s:'Jiwa pemimpin amanah, dipercaya banyak orang.',r:'Garis rezeki jelas di tengah telapak.',j:'Jodoh setia, sabar, mendukung dakwah.'},{t:'Pejuang Nafkah Halal',s:'Tangan menunjukkan pekerja keras sejati.',r:'Rezeki datang dari ketekunan bukan instan.',j:'Pasangan akan jadi partner sejati.'},{t:'Penuh Kesabaran',s:'Karakter sabar, penuh kasih sayang, tutur kata lembut.',r:'Kesabaran Anda magnet rezeki, banyak dipercaya.',j:'Jodoh sabar, pengertian, lembut, sakinah.'},{t:'Pemberi Kebaikan',s:'Garis tangan menunjukkan jiwa dermawan.',r:'Semakin banyak memberi, semakin dilipatgandakan.',j:'Jodoh juga gemar berbagi kebaikan.'}];const p=list[Math.floor(Math.random()*list.length)];cur={nama:n,...p,date:new Date().toLocaleDateString('id-ID'),no:'KA-'+Math.floor(Math.random()*90000+10000)};document.getElementById('hasil').innerHTML=`<div class="qrBox"><h3>${p.t}</h3><p><b>Atas Nama: ${n.toUpperCase()}</b></p><div class="detailBox"><b>Sifat:</b> ${p.s}<br><br><b>Rezeki:</b> ${p.r}<br><br><b>Jodoh:</b> ${p.j}<br><br><small>No: ${cur.no} | ${cur.date}</small></div><img src="qr-dana-asli.jpeg" style="width:180px;border-radius:10px;margin-top:8px"><br><button class="btnPDF" onclick="downloadPDF()">🏆 DOWNLOAD SERTIFIKAT MEWAH</button></div>`;document.getElementById('hasil').style.display='block';}
+function downloadPDF(){
+const {jsPDF}=window.jspdf;const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});const W=210,H=297;
+const cv=document.getElementById('cv');const ctx=cv.getContext('2d');const img=document.getElementById('tpl');
+if(!img.complete||img.naturalWidth==0){alert('Gambar template belum load! Pastikan upload 3 file: index.html, sertifikat-template-final.jpeg, qr-dana-asli.jpeg');return;}
+ctx.drawImage(img,0,0,cv.width,cv.height);
+ctx.fillStyle='#f5e9d0';ctx.fillRect(0, 680, 1080, 280);
+ctx.textAlign='center';ctx.fillStyle='#b78a1a';ctx.font='bold 120px Times New Roman';ctx.fillText(cur.nama.toUpperCase(),540,790);
+ctx.fillStyle='#1e3a2e';ctx.font='italic 38px Times New Roman';ctx.fillText(cur.t,540,860);
+ctx.fillStyle='#f5e9d0';ctx.fillRect(520,1490,500,90);
+ctx.fillStyle='#1e3a2e';ctx.font='bold 20px Arial';ctx.textAlign='left';ctx.fillText(`No: ${cur.no} | ${cur.date}`,560,1530);ctx.font='16px Arial';ctx.fillText('ki-awan.netlify.app',560,1560);
+const imgData=cv.toDataURL('image/jpeg',0.90);
+doc.addImage(imgData,'JPEG',0,0,W,H);
+doc.save(`SERTIFIKAT-MEWAH-${cur.nama.toUpperCase()}-${cur.no}.pdf`);
+}
+</script></body></html>
